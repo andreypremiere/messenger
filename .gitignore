@@ -1,0 +1,10 @@
+**/.idea/
+**/.vscode/
+localstack_data/
+mongo_data/
+postgres_data/
+*.drawio
+*.jpg
+*.docx
+**/.cache/
+**/node_modules/

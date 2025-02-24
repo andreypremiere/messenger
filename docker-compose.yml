@@ -1,0 +1,42 @@
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1111
+      POSTGRES_DB: database_chat
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./mongo_data:/data/db
+    networks:
+      - mynetwork
+
+  localstack:
+    image: localstack/localstack
+    container_name: localstack
+    environment:
+      - SERVICES=s3
+      - DEFAULT_REGION=us-east-1
+    ports:
+      - "4566:4566"  # LocalStack main endpoint (S3, DynamoDB, etc.)
+      - "4510:4510"  # For LocalStack's internal Web UI
+    volumes:
+      - ./localstack_data:/var/lib/localstack
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
