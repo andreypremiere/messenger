@@ -8,3 +8,4 @@ postgres_data/
 *.docx
 **/.cache/
 **/node_modules/
+**/__pycache__/

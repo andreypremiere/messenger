@@ -24,3 +24,10 @@ CREATE TABLE code_confirmation (
 	CHECK (number_phone_code ~ '^\d{6}$' OR number_phone_code IS NULL)
 )
 
+ALTER TABLE code_confirmation
+DROP CONSTRAINT code_confirmation_user_id_fkey;
+
+ALTER TABLE code_confirmation
+ADD CONSTRAINT code_confirmation_user_id_fkey
+FOREIGN KEY (user_id) REFERENCES users(user_id)
+ON DELETE CASCADE;
