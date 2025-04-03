@@ -1,0 +1,43 @@
+.form-frame {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    padding: 14px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 14px;
+}
+
+.input {
+    border-style: none;
+    height: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.25);
+    padding-left: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    font-weight: 400;
+    transition: box-shadow 0.3s ease
+}
+
+.input:focus {
+    outline: none;
+    box-shadow: 0 0 6px 0 #bfdfff;
+}
+
+.input:invalid:not(:placeholder-shown) {
+    box-shadow: 0 0 6px 0 #ff4d4d; 
+}

@@ -1,0 +1,8 @@
+.main-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    gap: 0px;
+    /* background-color: var(--main-background); */
+}
+

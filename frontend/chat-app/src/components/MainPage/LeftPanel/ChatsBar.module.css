@@ -1,0 +1,9 @@
+.sidebar {
+    display: flex;
+    width: 300px;
+    height: 100vh;
+    flex-direction: column;
+    gap: 0px;
+    border-right: var(--border-devider);
+    box-sizing: border-box;
+}

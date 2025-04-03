@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    width: 100%;
+    gap: 2px;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+    opacity: 0.4;
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* Уменьшаем ширину скроллбара */
+.container::-webkit-scrollbar {
+    width: 6px; /* Толщина вертикального скролла */
+    height: 6px; /* Толщина горизонтального скролла (если нужен) */
+}
+
+/* Фон скроллбара (дорожка) */
+.container::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+/* Сам ползунок скроллбара */
+.container::-webkit-scrollbar-thumb {
+    background-color: rgba(160, 208, 255, 0.2); /* Цвет ползунка */
+    border-radius: 3px; /* Закругляем углы */
+}
+
+/* При наведении мыши цвет становится чуть темнее */
+.container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(160, 208, 255, 0.2);
+}
+
+.container:hover {
+    opacity: 1;
+}

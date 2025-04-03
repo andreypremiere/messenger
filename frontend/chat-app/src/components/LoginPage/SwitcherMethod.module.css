@@ -1,0 +1,36 @@
+div {
+    display: flex;
+    gap: 10px;
+}
+
+.span {
+    flex: 1;
+    font-family: 'IBM Plex Mono';
+    font-weight: 500;
+    font-size: 16;
+    justify-content: center;
+    padding: 4px 0px;
+    letter-spacing: 0px;
+    text-align: center;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.defaultActive {
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+}
+
+.isActive {
+    box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+}
+
+.span:hover {
+    cursor: pointer;
+}
+
+.span.defaultActive:hover {
+    box-shadow: 0 0 4px 0 #d6eaff;
+}
+
