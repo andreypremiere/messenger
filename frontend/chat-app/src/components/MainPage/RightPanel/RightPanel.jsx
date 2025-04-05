@@ -11,13 +11,17 @@ function RightPanel() {
             <TopPanel></TopPanel>
 
             <div className={`${styles['container']}`}>
-                <div className={styles['center-container']}>
-                     {/* Панель с чатом */}
-                    <ChatPanel></ChatPanel>
+                {/* <div className={styles['filling-container']}>
+                    <div className={styles['center-container']}>
+                        
+                    </div>
+                </div> */}
+                
+                {/* Панель с чатом */}
+                <ChatPanel></ChatPanel>
 
-                    {/* Панель для записи сообщения */}
-                    <InputMessagePanel></InputMessagePanel>
-                </div>
+                {/* Панель для записи сообщения */}
+                <InputMessagePanel></InputMessagePanel>
             </div>
         </div>
     );

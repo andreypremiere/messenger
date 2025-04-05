@@ -18,17 +18,24 @@ const chatMessages = [
     { id: 13, id_user: 1, message: "Это было бы круто! Давай созвонимся, я покажу, что уже сделано." },
     { id: 14, id_user: 2, message: "Отлично, договорились! Когда тебе удобно?" },
     { id: 15, id_user: 1, message: "Завтра в 18:00 подойдет?" },
-    { id: 16, id_user: 2, message: "Да, мне подходит! Тогда до завтра!" }
+    { id: 16, id_user: 2, message: "Да, мне подходит! Тогда до завтра!" },
+    { id: 17, id_user: 2, message: "Буб "},
+    { id: 18, id_user: 2, message: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero sequi dicta, quaerat, culpa incidunt perspiciatis, doloremque dolorum at consequatur ut quo dolorem autem quidem delectus? Quod rem autem ipsa quae!"}
 ];
 
 
 function ChatPanel() {
+    // Добавить автоматическую прокрутку вниз при появлении сообщений
+
+
     return(
         <div className={styles['main-container']}>
             {/* Здесь отображение сообщений */}
-            {chatMessages.map(msg => (
-                <MessageComponent message={msg}></MessageComponent>
-            ))}
+            <div className={styles['messages-container']}>
+                {chatMessages.map(msg => (
+                    <MessageComponent user_id={1} message={msg}></MessageComponent>
+                ))}
+            </div>
         </div>
     );
 }

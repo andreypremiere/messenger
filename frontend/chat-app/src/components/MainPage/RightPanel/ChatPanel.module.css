@@ -1,7 +1,49 @@
 .main-container {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     /* flex: 1; */
     width: 100%;
+    justify-content: center;
+    max-height: 100%;
+    overflow: hidden;
     overflow-y: auto;
+    max-height: calc(100vh - 112px);
+    /* padding: 0px 20px; */
+    box-sizing: border-box;
+}
+
+.messages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    /* max-width: 100%;
+    max-height: 100%; */
+    flex: 1;
+    /* overflow-y: auto; */
+    /* max-height: calc(100vh - 152px); Учитываем высоту верхней панели и input */
+    max-width: 640px;
+    min-width: 400px;
+}
+
+
+/* Уменьшаем ширину скроллбара */
+.main-container::-webkit-scrollbar {
+    width: 6px; /* Толщина вертикального скролла */
+    height: 6px; /* Толщина горизонтального скролла (если нужен) */
+}
+
+/* Фон скроллбара (дорожка) */
+.main-container::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+/* Сам ползунок скроллбара */
+.main-container::-webkit-scrollbar-thumb {
+    background-color: rgba(88, 171, 255, 0.2); /* Цвет ползунка */
+    border-radius: 3px; /* Закругляем углы */
+}
+
+/* При наведении мыши цвет становится чуть темнее */
+.main-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(40, 126, 212, 0.2);
 }
