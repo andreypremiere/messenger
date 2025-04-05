@@ -1,4 +1,4 @@
-from app.database import get_db_connection, release_db_connection
+from app.database_postgresql import get_db_connection, release_db_connection
 
 
 async def get_user_by_nickname_or_email(nickname: str = None, email: str = None):

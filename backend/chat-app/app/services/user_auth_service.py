@@ -4,9 +4,14 @@ from app.utils.checking_string import is_valid_phone, is_valid_email, is_valid_n
 from app.utils.confirmation_code import generate_code
 from app.utils.formating_string import clean_phone_number
 from app.utils.sending_code import send_email
+from app.utils.database_redis import get_redis_client
 
 
-async def register_user(number_phone=None, email=None, nickname=None):
+async def register_user(data):
+    number_phone = data.get("numberPhone")
+    nickname = data.get("nickname")
+    email = data.get("email")
+
     number_phone = clean_phone_number(number_phone)
 
     if not is_valid_phone(number_phone) or not is_valid_email(email):
@@ -28,12 +33,17 @@ async def register_user(number_phone=None, email=None, nickname=None):
 
     code = generate_code()
 
-    save_result = await save_email_verification_code(user["user_id"], email_code=code)
+    # Сохраняет код в базе данных postgres
+    # save_result = await save_email_verification_code(user["user_id"], email_code=code)
+    r = get_redis_client()
+    print(r)
+    await r.set(f'{user["user_id"]}', f"{code}", ex=200)
 
-    if save_result is None:
-        return {'error': "Code confirmation wasn't saved in database"}
+    # if save_result is None:
+    #     return {'error': "Code confirmation wasn't saved in database"}
 
-    send_email(email, code)
+    # Отправка кода на почту, раскомментировать
+    # send_email(email, code)
 
     return {"result": user["user_id"]}
 
@@ -58,6 +68,7 @@ async def perform_login_service(data):
 
     if 'number_phone' in data:
         pass
+        # Можно тут же сделать по номеру телефона (требует уточнения)
 
 
 

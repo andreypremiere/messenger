@@ -6,9 +6,10 @@ import MainPage from './pages/MainPage/MainPage';
 function App() {
     return (
         // Страница регистрации и входа
-        // <LoginPage/>
+        <LoginPage/>
 
-        <MainPage></MainPage>
+        // Главная страница с чатами
+        // <MainPage></MainPage>
     );
 }
 

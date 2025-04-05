@@ -1,4 +1,4 @@
-from app.database import get_db_connection, release_db_connection
+from app.database_postgresql import get_db_connection, release_db_connection
 
 
 async def save_email_verification_code(user_id, email_code=None):
