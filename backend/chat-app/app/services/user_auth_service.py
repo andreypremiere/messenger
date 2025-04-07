@@ -4,7 +4,7 @@ from app.utils.checking_string import is_valid_phone, is_valid_email, is_valid_n
 from app.utils.confirmation_code import generate_code
 from app.utils.formating_string import clean_phone_number
 from app.utils.sending_code import send_email
-from app.utils.database_redis import get_redis_client
+from app.databases.database_redis import get_redis_client
 
 
 async def register_user(data):
@@ -43,7 +43,7 @@ async def register_user(data):
     #     return {'error': "Code confirmation wasn't saved in database"}
 
     # Отправка кода на почту, раскомментировать
-    # send_email(email, code)
+    send_email(email, code)
 
     return {"result": user["user_id"]}
 

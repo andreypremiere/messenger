@@ -4,16 +4,19 @@ from app.utils.jwt_provider import create_jwt_token
 from app.utils.sending_code import send_email
 
 
-async def verify_code(user_id, code, method):
-    if method not in ['email_code', 'number_phone_code']:
-        return {'error': 'Uncorrect method getting code'}
+async def verify_code(data):
+    user_id = data.get("userId")
+    code = data.get("codeConfirmation")
+
+    if user_id is None or code is None:
+        return {'error': 'Invalid input data (user_id or code)'}
 
     stored_code = await get_verification_code(user_id)
 
     if stored_code is None:
         return {"error": "Invalid or expired code"}
 
-    if code == stored_code[method]:
+    if code == stored_code:
         token = create_jwt_token(user_id)
         return {"token": token}
 

@@ -1,5 +1,5 @@
-from app.database_postgresql import get_db_connection, release_db_connection
-
+from app.databases.database_postgresql import get_db_connection, release_db_connection
+from app.databases.database_redis import get_redis_client
 
 async def save_email_verification_code(user_id, email_code=None):
     """Сохранить код подтверждения в БД."""
@@ -19,13 +19,22 @@ async def save_email_verification_code(user_id, email_code=None):
         return None
 
 
+# async def get_verification_code(user_id):
+#     """Получить код подтверждения по user_id."""
+#     db = await get_db_connection()
+#     query = "SELECT * FROM code_confirmation WHERE user_id = $1"
+#
+#     result = await db.fetchrow(query, user_id)
+#
+#     await release_db_connection(db)
+#
+#     return result
+
+
 async def get_verification_code(user_id):
     """Получить код подтверждения по user_id."""
-    db = await get_db_connection()
-    query = "SELECT * FROM code_confirmation WHERE user_id = $1"
+    r = get_redis_client()
 
-    result = await db.fetchrow(query, user_id)
+    code = await r.get(user_id)
 
-    await release_db_connection(db)
-
-    return result
+    return code

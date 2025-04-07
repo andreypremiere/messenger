@@ -1,10 +1,9 @@
-import redis
 from quart import Quart
 from quart_cors import cors
 from app.controllers.code_confirmation_route import verifying_bp
 from app.controllers.user_auth_route import auth_bp
-from app.database_postgresql import get_db
-from app.utils.database_redis import get_connection_redis
+from app.databases.database_postgresql import get_db
+from app.databases.database_redis import get_connection_redis
 
 app = Quart('Chat-project')
 

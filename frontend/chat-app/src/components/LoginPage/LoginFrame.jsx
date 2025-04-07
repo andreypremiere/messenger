@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from './LoginFrame.module.css'
 import Switcher from "./Switcher";
 import FormFrameLogin from "./FormFrameLogin";
-import ConfirmCode from "./ConfirmCode";
+import ConfirmCode from "../ConfirmationCodePage/ConfirmCode";
 import FormFrameRegister from "./FormFrameRegister";
 
 function LoginFrame() {

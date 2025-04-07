@@ -34,12 +34,11 @@ async def register():
 @auth_bp.route("/verify", methods=["POST"])
 async def verify():
     """
-    Подтверждает регистрацию пользователя.
+    Проверяет отправленный на почту код.
 
     Params:
         user_id (str): user_id, который был отправлен при регистрации на клиент.
         code (str): отправленный на почту код.
-        method (str): метод входа (tel, email, authcode).
 
     Returns:
         (str): Ошибка, если возникла ошибка.
@@ -48,9 +47,7 @@ async def verify():
     data = await request.json
 
     response = await verify_code(
-        user_id=data.get("user_id"),
-        code=data.get("code"),
-        method=data.get("method")
+        data
     )
 
     if 'error' in response:

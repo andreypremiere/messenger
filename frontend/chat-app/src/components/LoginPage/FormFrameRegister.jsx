@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import styles from './FormFrameRegister.module.css'
 import Button from "./Button";
 import { registerRequest } from "../../utils/LoginPage/LoginPageRequests";
+import { useNavigate } from "react-router-dom";
 
 function FormFrameRegister() {
+    const navigate = useNavigate();
     const patternPhone = "^\\+7(\\d{10})$";
     const patternEmail = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";    
     const [personData, setPersonData] = useState(
@@ -25,8 +27,9 @@ function FormFrameRegister() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await registerRequest(personData); // ждем ответа
+        const userId = await registerRequest(personData); // ждем ответа
         console.log('Запрос выполнен');
+        navigate('/confirm', { state: { isRegister: true, userId: userId } })
     }
 
     return(
