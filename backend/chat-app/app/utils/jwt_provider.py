@@ -7,10 +7,11 @@ load_dotenv()
 JWT_SECRET = os.getenv("JWT_SECRET")
 
 
-def create_jwt_token(user_id):
+def create_jwt_token(user_id, nickname):
     """Создает JWT-токен для пользователя."""
     payload = {
-        "user_id": str(user_id),
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=3)
+        "userId": str(user_id),
+        "nickname": str(nickname),
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=1)
     }
     return jwt.encode(payload, JWT_SECRET, algorithm="HS256")

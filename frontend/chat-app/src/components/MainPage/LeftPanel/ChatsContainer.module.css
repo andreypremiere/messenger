@@ -5,7 +5,7 @@
     flex-direction: column;
     flex: 1;
     overflow-y: auto;
-    opacity: 0.4;
+    filter: opacity(0.4);
     transition: opacity 0.2s ease-in-out;
 }
 
@@ -32,5 +32,5 @@
 }
 
 .container:hover {
-    opacity: 1;
+    filter: opacity(1);
 }

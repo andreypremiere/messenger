@@ -67,3 +67,8 @@
 .main-container:hover {
     background-color: #DCF3F9;
 }
+
+.isActive {
+    filter: none!;
+    background-color: #b7d3eb;
+}

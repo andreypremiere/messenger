@@ -7,15 +7,6 @@ import ConfirmationCodePage from './pages/ConfirmationCodePage/ConfirmationCodeP
 
 function App() {
     return (
-        // Страница регистрации и входа
-        // <LoginPage/>
-
-        // Подтверждение кода
-        // <ConfirmationCodePage></ConfirmationCodePage>
-
-        // Главная страница с чатами
-        // <MainPage></MainPage>
-
         <Router>
             <Routes>
                 <Route path="/" element={<LoginPage />} />

@@ -33,7 +33,7 @@ function ChatPanel() {
             {/* Здесь отображение сообщений */}
             <div className={styles['messages-container']}>
                 {chatMessages.map(msg => (
-                    <MessageComponent user_id={1} message={msg}></MessageComponent>
+                    <MessageComponent key={msg.id} user_id={1} message={msg}></MessageComponent>
                 ))}
             </div>
         </div>

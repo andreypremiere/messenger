@@ -11,7 +11,7 @@ function SwitcherMethod({handleSetMethod}) {
         else if (method === 'email') {
             handleSetMethod('email')
         }
-        else {
+        else if (method === 'nick') {
             handleSetMethod('text')
         }
 
@@ -22,7 +22,7 @@ function SwitcherMethod({handleSetMethod}) {
         <div>
             <span className={`${styles['span']} ${methodSwitcher === 'phone' ? styles['isActive'] : styles['defaultActive']}`} onClick={() => handleSetMethodSwitcher('phone')}>по телефону</span>
             <span className={`${styles['span']} ${methodSwitcher === 'email' ? styles['isActive'] : styles['defaultActive']}`} onClick={() => handleSetMethodSwitcher('email')}>по email</span>
-            <span className={`${styles['span']} ${methodSwitcher === 'auth' ? styles['isActive'] : styles['defaultActive']}`} onClick={() => handleSetMethodSwitcher('auth')}>по authApp</span>
+            <span className={`${styles['span']} ${methodSwitcher === 'nick' ? styles['isActive'] : styles['defaultActive']}`} onClick={() => handleSetMethodSwitcher('nick')}>по никнейму</span>
         </div>
     );
 };

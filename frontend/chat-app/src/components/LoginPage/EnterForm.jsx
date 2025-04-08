@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./EnterForm.module.css"
 import Button from "./Button";
+import { loginRequest } from "../../utils/LoginPage/LoginPageRequests";
+import { useNavigate } from "react-router-dom";
 
 function EnterForm({method}) {
+    const navigate = useNavigate()
     const [inputValue, setInputValue] = useState('')
     const [placeholder, setPlaceholder] = useState('Номер телефона')
     const patternPhone = "^\\+7(\\d{10})$";
@@ -19,14 +22,24 @@ function EnterForm({method}) {
             setPattern(patternEmail)
         }
         else if (method === 'text') {
-            setPlaceholder('Auth код')
-            setPattern(method)
+            setPlaceholder('Никнейм')
+            setPattern(null)
         }
     }, [method]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault(); 
-        console.log('Форма отправлена', )
+        const data = {
+            nickname: (method === 'text' ? inputValue : null),
+            numberPhone: (method === 'tel' ? inputValue : null),
+            email: (method === 'email' ? inputValue : null)
+        }
+
+        const userId = await loginRequest(data); 
+
+        if (userId != null) {
+            navigate('/confirm', {state: {isRegister: false, userId: userId}})
+        }
     }
 
     const handleInputValue = (e) => {
@@ -40,7 +53,7 @@ function EnterForm({method}) {
                 onChange={handleInputValue} placeholder={placeholder} 
                 pattern={pattern} className={styles['input']} required/>
 
-                <Button text={'Получить код'} handleSubmit={handleSubmit}/>
+                <Button text={'Получить код'}/>
             </form>
         </div>
     );

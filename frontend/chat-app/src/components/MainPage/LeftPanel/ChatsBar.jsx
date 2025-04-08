@@ -4,12 +4,12 @@ import SearchComponent from "./SearchComponent";
 import ChatsContainer from "./ChatsContainer";
 import BottomBar from "./BottomBar";
 
-function ChatsBar() {
+function ChatsBar({userData, jwtToken, currentChat, userChats, handleSetCurrentChat}) {
     return(
         <div className={styles["sidebar"]}>
             <SearchComponent/>
 
-            <ChatsContainer/>
+            <ChatsContainer currentChat={currentChat} userChats={userChats} handleSetCurrentChat={handleSetCurrentChat}/>
 
             <BottomBar/>
         </div>

@@ -56,7 +56,7 @@ async def verify():
     return jsonify(response)
 
 
-@auth_bp.route("/perform_login", methods=["POST"])
+@auth_bp.route("/login", methods=["POST"])
 async def perform_login():
     """
     Выполняет вход в систему.
@@ -68,15 +68,14 @@ async def perform_login():
 
     Returns:
         (str): Ошибка, если возникла ошибка.
-        (str): Сообщение об отправке кода пользователю, если пользователь бын найден.
+        user_id (str): Id юзера, если он был найден.
     """
 
     data = await request.json
-
+    print(data)
     result_login = await perform_login_service(data)
-
+    # result_login = {'result': 'Succesful'}
     if 'error' in result_login:
         return jsonify(result_login['error']), 400
 
-
-    return jsonify(result_login['result'])
+    return jsonify(result_login['user_id'])

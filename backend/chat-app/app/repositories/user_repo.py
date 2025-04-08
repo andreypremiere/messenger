@@ -1,15 +1,12 @@
 from app.databases.database_postgresql import get_db_connection, release_db_connection
 
 
-async def get_user_by_nickname_or_email(nickname: str = None, email: str = None):
+async def get_user_by_nickname_or_email_or_numberphone(nickname: str = None, email: str = None, number_phone: str = None):
     """Получить пользователя по email или телефону."""
-
-    # В сервисах предварительно выполнить проверку шаблона на номер телефона и допустимую длину nickname (создать функции utils)
-
     db = await get_db_connection()
-    query = "SELECT * FROM users WHERE nickname = $1 OR email = $2"
+    query = "SELECT * FROM users WHERE nickname = $1 OR email = $2 OR number_phone = $3;"
 
-    result = await db.fetchrow(query, nickname, email)
+    result = await db.fetchrow(query, nickname, email, number_phone)
 
     await release_db_connection(db)
 
@@ -49,8 +46,8 @@ async def get_user_by_id(user_id):
     db = await get_db_connection()
     query = "SELECT * FROM users WHERE user_id = $1"
 
-    result = await db.fetchrow(query, user_id)
+    user = await db.fetchrow(query, user_id)
 
     await release_db_connection(db)
 
-    return result
+    return user

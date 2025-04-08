@@ -10,31 +10,16 @@ function ConfirmCode( {isRegister, userId} ) {
     const [code, setCode] = useState('');
     const [timeLeft, setTimeLeft] = useState(120);
     const [expired, setExpired] = useState(false);
-    let handleSubmit = null
 
     const handleCode = (e) => {
         setCode(e.target.value);
     }
 
-    const handleSubmitRegister = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        // Здесь нужно взять полученный токен с первой страницы
-        // Сюда еще передать user_id из login
-
         const token = await verifyCodeRequest({userId: userId, codeConfirmation: code})
         console.log(token)
-        navigate('/main')
-    }
-
-    const handleSubmitLogin = () => {
-        return null
-    }
-
-    if (isRegister) {
-        handleSubmit = async (e) => {await handleSubmitRegister(e)};
-    }
-    else {
-        handleSubmit = async (e) => {await handleSubmitLogin(e)};
+        navigate('/main', {state: {jwt: token.token}})
     }
 
     useEffect(() => {
