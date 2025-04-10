@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import MainPage from './pages/MainPage/MainPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ConfirmationCodePage from './pages/ConfirmationCodePage/ConfirmationCodePage';
+import { ChatProvider } from './utils/ChatContext/ChatContext';
 
 function App() {
     return (
@@ -11,7 +12,11 @@ function App() {
             <Routes>
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/confirm" element={<ConfirmationCodePage />} />
-                <Route path="/main" element={<MainPage />} />
+                <Route path="/main" element={
+                    <ChatProvider>
+                        <MainPage />
+                    </ChatProvider>
+                    } />
             </Routes>
         </Router>
     );

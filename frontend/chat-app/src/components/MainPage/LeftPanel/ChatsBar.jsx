@@ -9,7 +9,8 @@ function ChatsBar({userData, jwtToken, currentChat, userChats, handleSetCurrentC
         <div className={styles["sidebar"]}>
             <SearchComponent/>
 
-            <ChatsContainer currentChat={currentChat} userChats={userChats} handleSetCurrentChat={handleSetCurrentChat}/>
+            <ChatsContainer currentChat={currentChat} userChats={userChats} 
+            handleSetCurrentChat={handleSetCurrentChat}/>
 
             <BottomBar/>
         </div>

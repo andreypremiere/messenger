@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ChatPanel.module.css"
 import MessageComponent from "./MessageComponent";
+import { useChat } from "../../../utils/ChatContext/ChatContext";
+
 
 const chatMessages = [
     { id: 1, id_user: 1, message: "Привет! Как у тебя дела?" },
@@ -24,16 +26,20 @@ const chatMessages = [
 ];
 
 
-function ChatPanel() {
-    // Добавить автоматическую прокрутку вниз при появлении сообщений
+function ChatPanel({userData, currentChat, messages}) {
+
+
+    // 1. Добавить автоматическую прокрутку вниз при появлении сообщений
+
+    // 2. Добавить эффект запроса первых 40 сообщений
 
 
     return(
         <div className={styles['main-container']}>
             {/* Здесь отображение сообщений */}
             <div className={styles['messages-container']}>
-                {chatMessages.map(msg => (
-                    <MessageComponent key={msg.id} user_id={1} message={msg}></MessageComponent>
+                {messages.map(msg => (
+                    <MessageComponent key={msg.messageId} user_id={userData.userId} message={msg}></MessageComponent>
                 ))}
             </div>
         </div>

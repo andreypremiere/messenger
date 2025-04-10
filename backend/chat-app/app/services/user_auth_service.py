@@ -37,7 +37,7 @@ async def register_user(data):
     # save_result = await save_email_verification_code(user["user_id"], email_code=code)
     r = get_redis_client()
     print(r)
-    await r.set(f'{user["user_id"]}', f"{code}", ex=200)
+    await r.set(f'code:{user["user_id"]}', f"{code}", ex=200)
 
     # if save_result is None:
     #     return {'error': "Code confirmation wasn't saved in database"}
@@ -66,7 +66,7 @@ async def perform_login_service(data):
 
     r = get_redis_client()
     print(r)
-    await r.set(f'{user["user_id"]}', f"{generated_code}", ex=200)
+    await r.set(f'code:{user["user_id"]}', f"{generated_code}", ex=200)
 
     return {"result": f"Code was sended to {user['email']}", 'user_id': user['user_id']}
 

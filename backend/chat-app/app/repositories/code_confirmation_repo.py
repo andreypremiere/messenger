@@ -35,6 +35,6 @@ async def get_verification_code(user_id):
     """Получить код подтверждения по user_id."""
     r = get_redis_client()
 
-    code = await r.get(user_id)
+    code = await r.get(f'code:{user_id}')
 
     return code

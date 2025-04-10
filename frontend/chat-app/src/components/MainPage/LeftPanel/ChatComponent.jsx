@@ -2,7 +2,7 @@ import React from "react";
 import styles from './ChatComponent.module.css'
 
 
-function ChatComponent({currentChat, previusChat, dataChat, handleSetCurrentChat}) {
+function ChatComponent({currentChat, dataChat, handleSetCurrentChat}) {
     const handleClick = (e) => {
         handleSetCurrentChat(dataChat);
     }

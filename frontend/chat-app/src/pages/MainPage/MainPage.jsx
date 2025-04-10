@@ -4,6 +4,7 @@ import ChatsBar from "../../components/MainPage/LeftPanel/ChatsBar";
 import RightPanel from "../../components/MainPage/RightPanel/RightPanel";
 import { decodeJWT } from "../../utils/JwtProvider/JwtProvider";
 import { useLocation } from "react-router-dom";
+import { useChat } from "../../utils/ChatContext/ChatContext";
 
 const chatsExample = [
     {chat_id: 1, nickname: 'Ivan', url: 'https://avatars.mds.yandex.net/i?id=4365ae8e173b59a915b5a8057ed767f3_l-4055448-images-thumbs&n=13'},
@@ -13,6 +14,8 @@ const chatsExample = [
 
 
 function MainPage() {
+    const { connect, closeConnection, send, currentMes } = useChat();
+    // Здесь переделать логику для использования контекста и переделать переменные
     const location = useLocation()
     const { jwt } = location.state
     const [jwtToken, setJwtToken] = useState(jwt)
@@ -30,13 +33,19 @@ function MainPage() {
     }, [userData]); 
 
     // useEffect(() => {
-    //     setUserChats(chatsExample)
+    //     connect();
     // }, []);
 
     const handleSetCurrentChat = (chat) => {
         setCurrentChat(chat);
         console.log(chat);
     }
+
+    // const testButton = (e) => {
+    //     e.preventDefault()
+    //     send();
+    //     console.log()
+    // }
 
     return(
         <div className={styles["main-container"]}>
@@ -47,7 +56,8 @@ function MainPage() {
 
             {Object.keys(currentChat).length === 0 ? 
             <div></div> : 
-            <RightPanel userData={userData} jwtToken={jwtToken}></RightPanel>}
+            <RightPanel userData={userData} jwtToken={jwtToken} currentChat={currentChat}></RightPanel>} 
+            {/* <button onClick={testButton}></button> */}
 
         </div>
     );
