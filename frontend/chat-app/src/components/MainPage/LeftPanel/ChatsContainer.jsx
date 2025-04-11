@@ -8,7 +8,7 @@ function ChatsContainer({ currentChat, userChats, handleSetCurrentChat}) {
     return(
         <div className={styles["container"]}>
             {userChats.map((chat) => {
-                return (<ChatComponent key={chat.chat_id} dataChat={chat} 
+                return (<ChatComponent key={chat._id} dataChat={chat} 
                     handleSetCurrentChat={handleSetCurrentChat}
                     currentChat={currentChat}
                 />)

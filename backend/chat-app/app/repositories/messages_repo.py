@@ -17,10 +17,10 @@ async def add_message(chat_id, sender, message, timestamp, status=None):
                                   'timestamp': timestamp,
                                   'status': status})
 
-    if result is not None:
-        return {'result': result}
-    else:
-        return {'error': 'Ошибка при добавлении сообщения.'}
+    if result.inserted_id:
+        inserted_doc = await db.find_one({'_id': result.inserted_id})
+        print('Вернулся документ: ', inserted_doc)
+        return {'result': inserted_doc}
 
 
 async def get_batch_messages(chat_id, group):
@@ -39,11 +39,13 @@ async def get_batch_messages(chat_id, group):
 async def get_all_messages(chat_id):
     db = get_mongo()['messages']
 
-    cursor = db.messages.find(
+    cursor = db.find(
         {"chat_id": chat_id}
     ).sort("timestamp", 1)
 
     messages = await cursor.to_list(length=None)
+
+    # print(messages)
 
     return {'result': messages}
 

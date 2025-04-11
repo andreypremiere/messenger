@@ -1,5 +1,6 @@
 from datetime import datetime
-from app.repositories.chats_repo import create_chat, get_chats_by_user
+from app.repositories.chats_repo import create_chat, get_chats_by_user, get_chat_by_chat_id
+from app.utils.serialize_document import serialize_document
 
 
 async def create_chat_service(data):
@@ -29,7 +30,20 @@ async def get_user_chats_service(data):
     # Вызов репозитория для получения чатов пользователя
     result = await get_chats_by_user(user_id)
 
+    result['chats'] = [serialize_document(i) for i in result['chats']]
+
     if result.get("chats"):
         return {"result": result['chats']}
     else:
         return {"error": "Чаты не найдены."}
+
+
+async def get_chat_by_chat_id_service(data):
+    chat_id = data.get('chat_id')
+    print(chat_id)
+    result = await get_chat_by_chat_id(chat_id)
+    print('Сервис получаения чата по id', result)
+
+    result = serialize_document(result)
+
+    return {'result': result}

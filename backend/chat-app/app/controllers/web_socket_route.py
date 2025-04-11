@@ -4,6 +4,8 @@ from datetime import datetime
 from app.databases.database_mongo import get_mongo
 from app.databases.database_redis import get_connection_redis
 import asyncio
+from app.services.chats_service import get_user_chats_service, get_chat_by_chat_id_service
+from app.services.messages_service import get_all_messages_service, add_message_service
 
 ws_bp = Blueprint("ws", __name__)
 
@@ -23,12 +25,28 @@ async def chat_socket():
     ws = websocket
     active_websockets[user_id] = ws
 
-    # mongo = get_mongo()
-    # redis = get_connection_redis()
-    # pubsub = redis.pubsub()
-    # await pubsub.subscribe(f"user:{user_id}")
+    redis = get_connection_redis()
+    pubsub = redis.pubsub()
+    await pubsub.subscribe(f"user:{user_id}")
 
     print(f"Пользователь {user_id} подключился к WebSocket.")
+
+    async def redis_listener():
+        async for message in pubsub.listen():
+            if message["type"] == "message":
+                raw_data = message["data"]
+
+                if isinstance(raw_data, bytes):
+                    raw_data = raw_data.decode('utf-8')  # Преобразуем байты в строку
+                try:
+                    parsed_data = json.loads(raw_data)  # Парсим JSON-строку в словарь
+                    sending_message = {'type': 'get_message', 'data': parsed_data}
+                    await ws.send_json(sending_message)
+                except Exception as ex:
+                    print(f"Ошибка при отправке сообщения пользователю {user_id}", ex)
+                    break
+
+    listener_task = asyncio.create_task(redis_listener())
 
     try:
         while True:
@@ -36,62 +54,40 @@ async def chat_socket():
             print('data', data)
             msg_type = data.get("type")
 
-            await ws.send_json({"type": msg_type, "message": 'Тоже привет'})
-            # if msg_type == "get_chats":
-            #     chats_cursor = mongo.chats.find({"participants": user_id})
-            #     chats = []
-            #     async for chat in chats_cursor:
-            #         chats.append({
-            #             "chatId": str(chat["_id"]),
-            #             "name": chat.get("name", ""),
-            #             "lastMessage": chat.get("lastMessage", "")
-            #         })
-            #     await ws.send_json({"type": "chat_list", "chats": chats})
-            #
-            # elif msg_type == "get_messages":
-            #     chat_id = data["chatId"]
-            #     cursor = mongo.messages.find({"chatId": chat_id}).sort("timestamp", 1)
-            #     messages = []
-            #     async for msg in cursor:
-            #         messages.append({
-            #             "sender": msg["sender"],
-            #             "content": msg["content"],
-            #             "timestamp": msg["timestamp"]
-            #         })
-            #     await ws.send_json({
-            #         "type": "message_history",
-            #         "chatId": chat_id,
-            #         "messages": messages
-            #     })
-            #
-            # elif msg_type == "send_message":
-            #     chat_id = data["chatId"]
-            #     content = data["content"]
-            #
-            #     message = {
-            #         "chatId": chat_id,
-            #         "sender": user_id,
-            #         "content": content,
-            #         "timestamp": datetime.utcnow().isoformat()
-            #     }
-            #
-            #     await mongo.messages.insert_one(message)
-            #
-            #     chat = await mongo.chats.find_one({"_id": chat_id})
-            #     participants = chat["participants"]
-            #
-            #     for uid in participants:
-            #         if uid != user_id:
-            #             await redis.publish(f"user:{uid}", json.dumps({
-            #                 "type": "new_message",
-            #                 **message
-            #             }))
+            # Получить список чатов по user_id
+            if msg_type == "get_chats":
+                print('Принят запрос на получение списка чатов\n', data)
+                result = await get_user_chats_service(data)
+                await ws.send_json({"type": msg_type, "data": result['result']})
+
+            # получение списка сообщений чата
+            elif msg_type == "get_messages":
+                result = await get_all_messages_service(data)
+                print('Результат перед отправкой', result)
+                await ws.send_json({'type': msg_type, 'data': result['result']})
+
+            # отправка сообщения
+            elif msg_type == 'send_message':
+                data = data.get('data')
+                # sender = data.get('sender')
+                result = await add_message_service(data)
+                messsage = result.get('result')
+                result_chat_response = await get_chat_by_chat_id_service(data)
+                result_chat = result_chat_response['result']
+                print(result_chat)
+                chat_participants = result_chat.get('participants')  # список участников
+
+                for pr in chat_participants:
+                    await redis.publish(f"user:{pr}", json.dumps({
+                        "type": "message",
+                        "data": messsage
+                    }))
 
     except Exception as e:
         print(f"WebSocket ошибка: {e}")
 
     finally:
-        # listener_task.cancel()
-        # await pubsub.unsubscribe(f"user:{user_id}")
+        listener_task.cancel()
+        await pubsub.unsubscribe(f"user:{user_id}")
         active_websockets.pop(user_id, None)
         print(f"Пользователь {user_id} отключился от WebSocket.")

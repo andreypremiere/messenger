@@ -1,5 +1,6 @@
 # from datetime import datetime
 from app.databases.database_mongo import get_mongo
+from bson import ObjectId
 
 
 async def create_chat(participants, datetime, chat_type='private', admin=None, name=None):
@@ -31,4 +32,13 @@ async def get_chats_by_user(user_id):
     chats = await cursor.to_list(length=None)
 
     return {"chats": chats}
+
+
+async def get_chat_by_chat_id(chat_id):
+    db = get_mongo()['chats']
+
+    result = await db.find_one({'_id': ObjectId(chat_id)})
+
+    return result
+
 

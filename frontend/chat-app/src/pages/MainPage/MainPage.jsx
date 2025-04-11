@@ -14,14 +14,15 @@ const chatsExample = [
 
 
 function MainPage() {
-    const { connect, closeConnection, send, currentMes } = useChat();
+    const { connect, closeConnection, getUserChats, chats, getCurrentMessages, setCurrentMessages,
+        currentMessages, sendMessage, setComingMessageCallback } = useChat();
     // Здесь переделать логику для использования контекста и переделать переменные
     const location = useLocation()
     const { jwt } = location.state
     const [jwtToken, setJwtToken] = useState(jwt)
     const [userData, setUserData] = useState({})
     const [currentChat, setCurrentChat] = useState({})
-    const [userChats, setUserChats] = useState(chatsExample)
+    // const [userChats, setUserChats] = useState(chatsExample)
 
     useEffect(() => {
         setUserData(decodeJWT(jwtToken));
@@ -32,31 +33,50 @@ function MainPage() {
         console.log(userData.userId);
     }, [userData]); 
 
-    // useEffect(() => {
-    //     connect();
-    // }, []);
+
+    // Зачем передавать эту функцию, если это можно сделать в контексте
+    const handleComingMessage = (data) => {
+        if (currentChat._id === data.chat_id) {
+            setCurrentMessages(prevMessages => [...prevMessages, data]);
+        }
+    }
+
+    useEffect(() => {
+        setComingMessageCallback(handleComingMessage)
+    }, [currentChat])
+
+
+    useEffect(() => {
+        if (userData.userId) {
+            connect(userData.userId);
+        }
+    }, [userData.userId]);
 
     const handleSetCurrentChat = (chat) => {
+        console.log('currentChat', chat)
         setCurrentChat(chat);
+        getCurrentMessages(chat._id)
         console.log(chat);
     }
 
-    // const testButton = (e) => {
-    //     e.preventDefault()
-    //     send();
-    //     console.log()
-    // }
+    const handleSendMessage = (message) => {
+        // Здесь вызвать и отправить функцию из контекста
+        const data = {chat_id: currentChat._id, sender: userData.userId, message: message}
+        sendMessage(data)
+    }
 
     return(
         <div className={styles["main-container"]}>
             {/* Левый sidebar который хранит чаты */}
-            <ChatsBar userData={userData} jwtToken={jwtToken} currentChat={currentChat} userChats={userChats} handleSetCurrentChat={handleSetCurrentChat}></ChatsBar>   
+            <ChatsBar userData={userData} jwtToken={jwtToken} currentChat={currentChat} 
+            userChats={chats} handleSetCurrentChat={handleSetCurrentChat}></ChatsBar>   
 
             {/* Правая панель с чатом */}
 
             {Object.keys(currentChat).length === 0 ? 
             <div></div> : 
-            <RightPanel userData={userData} jwtToken={jwtToken} currentChat={currentChat}></RightPanel>} 
+            <RightPanel userData={userData} jwtToken={jwtToken} 
+            currentChat={currentChat} currentMessages={currentMessages} handleSendMessage={handleSendMessage}></RightPanel>} 
             {/* <button onClick={testButton}></button> */}
 
         </div>
