@@ -13,7 +13,7 @@ function RightPanel({userData, jwtToken, currentChat, currentMessages, handleSen
     return(
         <div className={styles['main-container']}>
             {/* Верхняя панель */}
-            <TopPanel currentChat={currentChat}></TopPanel>
+            <TopPanel currentChat={currentChat} userData={userData}></TopPanel>
 
             <div className={`${styles['container']}`}>
                 {/* Панель с чатом */}

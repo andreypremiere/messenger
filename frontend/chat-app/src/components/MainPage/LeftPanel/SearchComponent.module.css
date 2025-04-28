@@ -3,7 +3,24 @@
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
+    justify-content: space-between;
 }
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.icon {
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
 
 .input {
     border-style: none;
@@ -16,6 +33,7 @@
     font-weight: 400;
     transition: box-shadow 0.3s ease;
     width: 100%;
+    padding-right: 32px;
 }
 
 .input:focus {

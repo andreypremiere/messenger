@@ -4,13 +4,13 @@ import ChatComponent from "./ChatComponent";
 import { useState, useEffect } from "react";
 
 
-function ChatsContainer({ currentChat, userChats, handleSetCurrentChat}) {
+function ChatsContainer({ currentChat, userChats, handleSetCurrentChat, userData}) {
     return(
         <div className={styles["container"]}>
             {userChats.map((chat) => {
                 return (<ChatComponent key={chat._id} dataChat={chat} 
                     handleSetCurrentChat={handleSetCurrentChat}
-                    currentChat={currentChat}
+                    currentChat={currentChat} userData={userData}
                 />)
             })}
         </div>

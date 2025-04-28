@@ -6,8 +6,10 @@ import {ReactComponent as IconCamera} from '../../../assets/icons/icon-cam.svg'
 import {ReactComponent as IconAdditional} from '../../../assets/icons/icon-additional.svg'
 
 
-function TopPanel({currentChat}) {
+function TopPanel({currentChat, userData}) {
     const [isOnline, setIsOnline] = useState(true)
+
+    console.log("Текущий чат:", currentChat)
 
     return(
         <div className={styles['main-container']}>
@@ -16,7 +18,13 @@ function TopPanel({currentChat}) {
                     <img className={styles["img"]} src={currentChat.url} alt="Аватар" />
                 </div>
                 <div className={styles["person-data"]}>
-                    <span className={styles['nickname']}>{currentChat.nickname}</span>
+                    {
+                        currentChat.name
+                        ?
+                        <span className={styles['nickname']}>{currentChat.name}</span>
+                        : 
+                        <span className={styles['nickname']}>{currentChat.participants.find(p => p.id !== userData.userId)?.nickname}</span>
+                    }
                     <div className={styles['status']}>
                         {isOnline && <IconOnline className={styles['icon-online']}/>}
                         <span className={styles["text-status"]}>{isOnline ? 'online' : 'offline'}</span>

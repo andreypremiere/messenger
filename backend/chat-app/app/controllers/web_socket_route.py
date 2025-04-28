@@ -51,19 +51,19 @@ async def chat_socket():
     try:
         while True:
             data = await ws.receive_json()
-            print('data', data)
+            # print('data', data)
             msg_type = data.get("type")
 
             # Получить список чатов по user_id
             if msg_type == "get_chats":
-                print('Принят запрос на получение списка чатов\n', data)
+                # print('Принят запрос на получение списка чатов\n', data)
                 result = await get_user_chats_service(data)
                 await ws.send_json({"type": msg_type, "data": result['result']})
 
             # получение списка сообщений чата
             elif msg_type == "get_messages":
                 result = await get_all_messages_service(data)
-                print('Результат перед отправкой', result)
+                # print('Результат перед отправкой', result)
                 await ws.send_json({'type': msg_type, 'data': result['result']})
 
             # отправка сообщения
@@ -74,7 +74,7 @@ async def chat_socket():
                 messsage = result.get('result')
                 result_chat_response = await get_chat_by_chat_id_service(data)
                 result_chat = result_chat_response['result']
-                print(result_chat)
+                # print(result_chat)
                 chat_participants = result_chat.get('participants')  # список участников
 
                 for pr in chat_participants:

@@ -26,7 +26,7 @@ async def get_chats_by_user(user_id):
     db = get_mongo()['chats']
 
     cursor = db.find(
-        {"participants": user_id}
+        {"participants.id": user_id}
     ).sort("updatedAt", -1)
 
     chats = await cursor.to_list(length=None)

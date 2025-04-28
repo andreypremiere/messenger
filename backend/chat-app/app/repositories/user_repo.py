@@ -4,7 +4,7 @@ from app.databases.database_postgresql import get_db_connection, release_db_conn
 async def get_user_by_nickname_or_email_or_numberphone(nickname: str = None, email: str = None, number_phone: str = None):
     """Получить пользователя по email или телефону."""
     db = await get_db_connection()
-    query = "SELECT * FROM users WHERE nickname = $1 OR email = $2 OR number_phone = $3;"
+    query = "SELECT * FROM users WHERE individual_nickname = $1 OR email = $2 OR number_phone = $3;"
 
     result = await db.fetchrow(query, nickname, email, number_phone)
 
@@ -21,9 +21,9 @@ async def register_user_repo(nickname: str = None, number_phone: str = None, ema
 
     # Создание запроса для вставки нового пользователя
     query = """
-    INSERT INTO users (nickname, number_phone, email)
+    INSERT INTO users (individual_nickname, number_phone, email)
     VALUES ($1, $2, $3)
-    RETURNING user_id, nickname, number_phone, email
+    RETURNING user_id, individual_nickname, number_phone, email
     """
 
     # Выполнение запроса с передачей значений для вставки
@@ -34,7 +34,7 @@ async def register_user_repo(nickname: str = None, number_phone: str = None, ema
     if result is not None:
         return {
             "user_id": result["user_id"],
-            "nickname": result["nickname"],
+            "nickname": result["individual_nickname"],
             "number_phone": result["number_phone"],
             "email": result['email']
         }
