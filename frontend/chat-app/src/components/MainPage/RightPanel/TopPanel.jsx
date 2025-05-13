@@ -15,7 +15,8 @@ function TopPanel({currentChat, userData}) {
         <div className={styles['main-container']}>
             <div className={styles['group']} style={{ width: "200px" }}>
                 <div className={styles['avatar']}>
-                    <img className={styles["img"]} src={currentChat.url} alt="Аватар" />
+                    <img className={styles["img"]} src="http://localhost:4566/user-avatars/user-1111.jpg
+" alt="Аватар" />
                 </div>
                 <div className={styles["person-data"]}>
                     {

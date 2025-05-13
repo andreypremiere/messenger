@@ -1,5 +1,8 @@
+import json
+
 from app.repositories.code_confirmation_repo import save_email_verification_code
-from app.repositories.user_repo import get_user_by_nickname_or_email_or_numberphone, register_user_repo
+from app.repositories.user_repo import get_user_by_nickname_or_email_or_numberphone, register_user_repo, \
+    find_users_by_any_nickname
 from app.utils.checking_string import is_valid_phone, is_valid_email, is_valid_nickname
 from app.utils.confirmation_code import generate_code
 from app.utils.formating_string import clean_phone_number
@@ -69,6 +72,22 @@ async def perform_login_service(data):
     await r.set(f'code:{user["user_id"]}', f"{generated_code}", ex=200)
 
     return {"result": f"Code was sended to {user['email']}", 'user_id': user['user_id']}
+
+
+async def find_users_by_nickname(nickname: str):
+
+    if not nickname:
+        return None
+
+    result = await find_users_by_any_nickname(nickname)
+    users = []
+
+    for user in result:
+        user = dict(user)
+        user['url_avatars'] = json.loads(user['url_avatars'])
+        users.append(user)
+
+    return users
 
 
 

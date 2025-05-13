@@ -14,7 +14,7 @@ function ChatComponent({currentChat, dataChat, handleSetCurrentChat, userData}) 
     return(
         <div className={`${styles["main-container"]} ${currentChat && (currentChat._id === dataChat._id ? styles['isActive'] : '')}`} onClick={handleClick}>
             <div className={styles["avatar"]}>
-                <img className={styles["image"]} src='https://avatars.mds.yandex.net/get-yapic/28053/faBGBmxjLCFKw862MA5zAl6A6SA-1/orig' alt="Изображение" />
+                <img className={styles["image"]} src='http://localhost:4566/user-avatars/user-1111.jpg' alt="Изображение" />
             </div>
             <div className={styles["data-chat"]}>
                 {

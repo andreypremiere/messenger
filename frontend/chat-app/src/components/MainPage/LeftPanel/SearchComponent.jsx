@@ -3,8 +3,7 @@ import styles from './SearchComponent.module.css'
 import {ReactComponent as IconClose} from '../../../assets/icons/icon_close.svg'
 
 
-function SearchComponent() {
-    const [value, setValue] = useState('')
+function SearchComponent({value, setValue, handlePerformSearch}) {
 
     const handleOnChange = (e) => {
         setValue(e.target.value)
@@ -17,9 +16,10 @@ function SearchComponent() {
     useEffect(() => {
         const handler = setTimeout(() => {
             if (value) {
-                console.log(value)
+                console.log('Поиск начат')
+                handlePerformSearch();
             }
-            // здесь должен быть запрос на сервер
+            
         }, 1200)
 
         return () => clearTimeout(handler)

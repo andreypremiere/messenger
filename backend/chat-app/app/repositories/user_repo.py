@@ -51,3 +51,15 @@ async def get_user_by_id(user_id):
     await release_db_connection(db)
 
     return user
+
+
+async def find_users_by_any_nickname(nickname):
+    db = await get_db_connection()
+
+    query = "SELECT * FROM users WHERE nickname LIKE $1"
+    users = await db.fetch(query, f'%{nickname}%')
+    # print(users)
+
+    await release_db_connection(db)
+
+    return users
