@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./ChatPanel.module.css"
 import MessageComponent from "./MessageComponent";
 import { useChat } from "../../../utils/ChatContext/ChatContext";
+import DocumentComponent from "./DocumentComponent";
 
 
 function ChatPanel({userData, currentChat, messages}) {
@@ -16,10 +17,19 @@ function ChatPanel({userData, currentChat, messages}) {
         <div className={styles['main-container']}>
             {/* Здесь отображение сообщений */}
             <div className={styles['messages-container']}>
-                {messages.map((msg) => {
+                {
+                    currentChat.type ==='private-predict' ?
+                    messages.map((msg) => {
+                    console.log('private-predict ')
+                    console.log("Сообщение:", msg);
+                    return <DocumentComponent key={msg._id} user_id={userData.userId} message={msg}></DocumentComponent>
+                    }) :
+                    messages.map((msg) => {
                     console.log("Сообщение:", msg);
                     return <MessageComponent key={msg._id} user_id={userData.userId} message={msg}></MessageComponent>
-                })}
+                    })
+                }
+                
             </div>
         </div>
     );

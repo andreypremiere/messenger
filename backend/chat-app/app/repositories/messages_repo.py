@@ -23,6 +23,26 @@ async def add_message(chat_id, sender, message, timestamp, status=None):
         return {'result': inserted_doc}
 
 
+async def repo_add_message_ml(chat_id, sender, file_name, data, timestamp, status=None):
+    db = get_mongo()['messages']
+
+    if status is None:
+        status = 'delivered'
+
+    # вернет id нового документа
+    result = await db.insert_one({'chat_id': chat_id,
+                                  'sender': sender,
+                                  'content': None,
+                                  'file_name': file_name,
+                                  'data': data,
+                                  'timestamp': timestamp,
+                                  'status': status})
+
+    if result.inserted_id:
+        inserted_doc = await db.find_one({'_id': result.inserted_id})
+        return inserted_doc
+
+
 async def get_batch_messages(chat_id, group):
     limit = 100
     db = get_mongo()['messages']

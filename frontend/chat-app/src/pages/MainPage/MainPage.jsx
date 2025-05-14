@@ -15,7 +15,7 @@ const chatsExample = [
 
 function MainPage() {
     const { connect, closeConnection, getUserChats, chats, getCurrentMessages, setCurrentMessages,
-        currentMessages, sendMessage, setComingMessageCallback } = useChat();
+        currentMessages, sendMessage, setComingMessageCallback, sendRequestML, getCurrentMessagesML } = useChat();
     // Здесь переделать логику для использования контекста и переделать переменные
     const location = useLocation()
     const { jwt } = location.state
@@ -54,15 +54,27 @@ function MainPage() {
 
     const handleSetCurrentChat = (chat) => {
         console.log('currentChat', chat)
+        if (chat.type === 'private-predict') {
+            getCurrentMessagesML(chat._id)
+        }
+        else {getCurrentMessages(chat._id)}
         setCurrentChat(chat);
-        getCurrentMessages(chat._id)
-        console.log(chat);
+        // console.log(chat);
     }
 
     const handleSendMessage = (message) => {
         // Здесь вызвать и отправить функцию из контекста
-        const data = {chat_id: currentChat._id, sender: userData.userId, message: message}
-        sendMessage(data)
+        let data;
+        console.log(currentChat)
+        if (currentChat.type === 'private-predict') {
+            data = {chat_id: currentChat._id, sender: userData.userId, documents: message}
+            console.log('Сработал ML вызов')
+            sendRequestML(data)
+        }
+        else {
+            data = {chat_id: currentChat._id, sender: userData.userId, message: message}
+            sendMessage(data)
+        }
     }
 
     return(

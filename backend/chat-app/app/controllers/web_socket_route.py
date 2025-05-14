@@ -5,7 +5,9 @@ from app.databases.database_mongo import get_mongo
 from app.databases.database_redis import get_connection_redis
 import asyncio
 from app.services.chats_service import get_user_chats_service, get_chat_by_chat_id_service
-from app.services.messages_service import get_all_messages_service, add_message_service
+from app.services.messages_service import get_all_messages_service, add_message_service, add_message_ml_service, \
+    get_all_messages_ml_service
+from app.utils.compute_value import process_data
 
 ws_bp = Blueprint("ws", __name__)
 
@@ -65,6 +67,35 @@ async def chat_socket():
                 result = await get_all_messages_service(data)
                 # print('Результат перед отправкой', result)
                 await ws.send_json({'type': msg_type, 'data': result['result']})
+
+            elif msg_type == 'send_ml':
+                print('Принят результат для ml', data)
+                data = data.get('data')
+                # Добавить в базу полученные данные и отправить о получении
+                for i in data['documents']:
+                    result = await add_message_ml_service({'chat_id': data['chat_id'],
+                                                           'sender': data['sender'],
+                                                           'file_name': i['name'],
+                                                           'data': i['data']})
+                    # Отправить на клиент сообщение
+                    # print('result в sockete:', result)
+                    await ws.send_json({'type': 'response_message_ml', 'data': result})
+
+                # Добавить в базу полученные результатыт и отправить ответ
+                predictions = process_data(data.get('documents'))
+                for i in predictions:
+                    result = await add_message_ml_service({'chat_id': data['chat_id'],
+                                                           'sender': '315642f8-f97f-446e-b041-fec5dd3480d7',
+                                                           'file_name': i['name'],
+                                                           'data': i['data']})
+                    # Отправить на клиент результат
+                    # print('prediction в sockete:', predictions)
+                    await ws.send_json({'type': 'response_message_ml', 'data': result})
+
+            elif msg_type == 'get_messages_ml':
+                result = await get_all_messages_ml_service(data)
+                # print('Результат перед отправкой', result)
+                await ws.send_json({'type': 'response_messages_ml', 'data': result})
 
             # отправка сообщения
             elif msg_type == 'send_message':

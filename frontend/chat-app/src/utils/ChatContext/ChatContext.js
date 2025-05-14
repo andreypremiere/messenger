@@ -29,22 +29,33 @@ export const ChatProvider = ({ children }) => {
             const data = JSON.parse(event.data);
             console.log('data после парса', data)
 
-                if (data.type === 'get_chats') {
-                    // console.log(data.data)
-                    setChats(data.data)
-                }
-                else if (data.type === 'get_messages') {
-                    // console.log(data.data)
-                    setCurrentMessages(data.data)
-                }
-                else if (data.type === 'get_message') {
-                    console.log("Данные из провайдера при приеме:", data)
-                    // Исправить отправляемый результат на беке
-                    // console.log('typeof data:', typeof data);
-                    // console.log('is data an object?', data instanceof Object);
+            if (data.type === 'get_chats') {
+                // console.log(data.data)
+                setChats(data.data)
+            }
+            else if (data.type === 'get_messages') {
+                // console.log(data.data)
+                setCurrentMessages(data.data)
+            }
+            else if (data.type === 'get_message') {
+                console.log("Данные из провайдера при приеме:", data)
+                // Исправить отправляемый результат на беке
+                // console.log('typeof data:', typeof data);
+                // console.log('is data an object?', data instanceof Object);
 
-                    comingMessageCallback.current.callback(data.data.data)
-                }
+                comingMessageCallback.current.callback(data.data.data)
+            }
+            // Добавление сообщения для чата ml
+            else if (data.type === 'response_message_ml') {
+                console.log('Один документ пришел', data.data)
+                comingMessageCallback.current.callback(data.data)
+            }
+            // Запрос истории сообщений
+            else if (data.type === 'response_messages_ml') {
+                console.log('История сообщений', data.data)
+                setCurrentMessages(data.data)            
+            }
+
         };
     };
 
@@ -57,6 +68,13 @@ export const ChatProvider = ({ children }) => {
     const getCurrentMessages = (chat_id) => {
         if (socketRef.current.readyState === WebSocket.OPEN) {
             socketRef.current.send(JSON.stringify({'type': 'get_messages', 'chat_id': chat_id}))
+        }
+    }
+
+    // Запрос сообщений для чата Ml
+    const getCurrentMessagesML = (chat_id) => {
+        if (socketRef.current.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({'type': 'get_messages_ml', 'chat_id': chat_id}))
         }
     }
 
@@ -73,10 +91,16 @@ export const ChatProvider = ({ children }) => {
         }
     }
 
+    const sendRequestML = (data) => {
+        if (socketRef.current.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({'type': 'send_ml', 'data': data}))
+        }
+    }
+
     return (
         <ChatContext.Provider value={{ connect, closeConnection, getUserChats, chats, 
             getCurrentMessages, setCurrentMessages, currentMessages, sendMessage, 
-            setComingMessageCallback
+            setComingMessageCallback, sendRequestML, getCurrentMessagesML
 
          }}>
             {children}

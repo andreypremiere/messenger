@@ -18,6 +18,7 @@
     height: 100%;
     flex: 1;
     align-items: center;
+    position: relative;
 }
 
 .input {
@@ -47,4 +48,63 @@
 
 .container-icon:hover {
     box-shadow: 0 0 6px 0 #7ebdfc;
+}
+
+.hidden-container-icon {
+    position: absolute;
+    left: -36px;
+    cursor: pointer;
+    padding: 4px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    background-color: transparent;
+    /* box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.25); */
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.hidden-container-icon:hover {
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.container-input {
+    position: relative;
+    display: flex;
+    flex: 1;
+}
+
+.info-files {
+    position: absolute;
+    display: flex;
+    font-family: var(--ibm-plex-font-famili);
+    font-size: 8px;
+    top: -30px;
+    flex-direction: column;
+}
+
+.files-list {
+    position: absolute;
+    bottom: calc(100% + 20px); /* выше поля ввода */
+    left: 0;
+    /* width: 100%; */
+    /* background-color: white; */
+    /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); */
+    /* padding: 8px; */
+    /* border-radius: 6px; */
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    /* max-width: 100px; */
+}
+
+.file-item {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 2px 0px;
+}
+
+.close-icon {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
 }
